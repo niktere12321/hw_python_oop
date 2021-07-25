@@ -1,4 +1,5 @@
 import datetime as dt
+"""Импортировали библиотеку"""
 
 
 class Record:
@@ -20,10 +21,8 @@ class Calculator:
         self.limit = limit
         self.records = []
 
-
     def add_record(self, record):
         self.records.append(record)
-
 
     def get_today_stats(self):
         today_stat = 0
@@ -32,7 +31,6 @@ class Calculator:
             if record.date == today:
                 today_stat += record.amount
         return today_stat
-
 
     def get_week_stats(self):
         week_stat = 0
@@ -65,38 +63,37 @@ class CashCalculator(Calculator):
             cash1 = -cash
             return (f'Денег нет, держись: твой долг - {cash1} {name}')
 
+
 class CaloriesCalculator(Calculator):
-
-
     def get_calories_remained(self):
         calr_today = self.get_today_stats()
         calor_lim = self.limit
         eda = calor_lim - calr_today
         if calr_today < calor_lim:
-            return(f'Сегодня можно съесть что-нибудь ещё, но с общей калорийностью не более {eda} '
-                    'кКал')
+            return(f'Сегодня можно съесть что-нибудь ещё, '
+                   f'но с общей калорийностью не более {eda} '
+                   f'кКал')
         else:
             return('Хватит есть!')
 
 
 cash_calculator = CashCalculator(1000)
+
+
 cash_calculator.add_record(Record(amount=145, comment='кофе'))
 cash_calculator.add_record(Record(amount=300, comment='Серёге за обед'))
 cash_calculator.add_record(Record(amount=3000,
                                   comment='бар в Танин др',
                                   date='08.11.2019'))
-
 print(cash_calculator.get_today_cash_remained('rub'))
 print(cash_calculator.get_today_stats())
 print(cash_calculator.get_week_stats())
 print(cash_calculator.get_today_cash_remained('eur'))
 print(cash_calculator.get_today_cash_remained('usd'))
-
 calories = CaloriesCalculator(3000)
 calories.add_record(Record(100, 'роллы'))
 calories.add_record(Record(10, 'пицца', '21.09.2021'))
 calories.add_record(Record(300, 'Гамубургер', '22.09.2021'))
-
 print(calories.get_today_stats())
 print(calories.get_week_stats())
 print(calories.get_calories_remained())
