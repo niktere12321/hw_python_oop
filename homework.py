@@ -45,7 +45,7 @@ class Calculator:
         w = dt.timedelta(days=7)
         week = today - w
         for record in self.records:
-            if record.date >= week and record.date <= today:
+            if week <= record.date <= today:
                 week_stat += record.amount
         return week_stat
 
@@ -65,13 +65,13 @@ class CashCalculator(Calculator):
     """можно потратить сегодня в разных валютах"""
     def get_today_cash_remained(self, currency):
         cash = self.get_today_limit_balance()
+        if cash == 0:
+            return ('Денег нет, держись')
         currencies = {'usd': ('USD', CashCalculator.USD_RATE),
                       'eur': ('Euro', CashCalculator.EURO_RATE),
                       'rub': ('руб', CashCalculator.RUB_RATE)}
         name, rate = currencies[currency]
         cash = round(cash / rate, 2)
-        if cash == 0:
-            return ('Денег нет, держись')
         if cash > 0:
             return (f'На сегодня осталось {cash} {name}')
         if cash <= 0:
